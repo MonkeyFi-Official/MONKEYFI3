@@ -2,53 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monkeyfi News</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>News - Home</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="logo">🐵 Monkeyfi News</div>
-    
-    <nav class="navbar" id="navbar">
-      <a href="index.html" class="active">News</a>
+
+  <header>
+    <div class="logo">🌐 MyNews</div>
+    <div class="menu-icon" onclick="toggleMenu(this)">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+    <nav id="navbar">
+      <a href="index.html" class="active">Home</a>
       <a href="info.html">Info</a>
       <a href="help.html">Help</a>
     </nav>
-    
-    <div class="toggle-container">
-      <button class="theme-toggle" id="themeToggle">🌓</button>
-      <div class="menu-icon" id="menuIcon">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
   </header>
 
-  <section class="hero" data-animate>
-    <h1>Welcome to Monkeyfi News</h1>
-    <p>Your daily dose of clean, fast & professional news</p>
+  <section class="banner">
+    <h1>Welcome to the News Portal</h1>
+    <p>Stay informed with the latest updates!</p>
   </section>
 
-  <section class="content" data-animate>
-    <h2>Latest Headlines</h2>
+  <section class="news">
     <article>
-      <h3>🌍 World News</h3>
-      <p>Stay updated with the latest international news and trends.</p>
+      <h2>🌟 Big News Today!</h2>
+      <p>Something amazing just happened in the world. Stay tuned for more information.</p>
     </article>
     <article>
-      <h3>📱 Technology</h3>
-      <p>Monkeyfi keeps you in the loop with the latest tech buzz.</p>
-    </article>
-    <article>
-      <h3>🎮 Gaming</h3>
-      <p>We report what gamers really care about — updates, leaks & more!</p>
+      <h2>📢 Update</h2>
+      <p>We are working hard to keep you updated with fresh news every hour.</p>
     </article>
   </section>
 
-  <footer class="footer">
-    <p>© 2025 Monkeyfi News. All rights reserved.</p>
+  <footer>
+    &copy; 2025 MyNews. All rights reserved.
   </footer>
 
   <script src="script.js"></script>
