@@ -2,26 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MonkeyFi - Help</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Help - MonkeyFi</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Need Help?</h1>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <nav id="menu">
+  <header class="header">
+    <div class="logo">🐒 MonkeyFi</div>
+    <nav class="navbar" id="navbar">
       <a href="index.html">News</a>
       <a href="info.html">Info</a>
-      <a href="help.html">Help</a>
+      <a href="help.html" class="active">Help</a>
     </nav>
+    <div class="toggle-switch">
+      <input type="checkbox" id="darkModeToggle">
+      <label for="darkModeToggle"></label>
+    </div>
+    <div class="menu-toggle" id="menuToggle">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </header>
 
-  <main>
-    <h2>How can we assist?</h2>
-    <p>For support, please contact us via Telegram or email:</p>
-    <p>Email: support@monkeyfi.com</p>
+  <main class="container">
+    <h1>Need Help?</h1>
+    <p>If you have any questions, issues, or feedback regarding MonkeyFi, feel free to contact us.</p>
+
+    <div class="help-card">
+      <h2>📧 Contact Email</h2>
+      <p>Email us anytime at:</p>
+      <a href="mailto:monkeyfioffical@gmail.com" class="email-link">monkeyfioffical@gmail.com</a>
+    </div>
+
+    <div class="faq-section">
+      <h2>❓ Frequently Asked Questions</h2>
+      <ul>
+        <li><strong>Q:</strong> What is MonkeyFi?</li>
+        <li><strong>A:</strong> MonkeyFi is a platform for community-driven news and updates.</li>
+
+        <li><strong>Q:</strong> How can I stay updated?</li>
+        <li><strong>A:</strong> Keep checking the News section or subscribe to our email updates.</li>
+
+        <li><strong>Q:</strong> Where can I give feedback?</li>
+        <li><strong>A:</strong> Send all feedback directly to our support email.</li>
+      </ul>
+    </div>
   </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 MonkeyFi. All rights reserved.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
