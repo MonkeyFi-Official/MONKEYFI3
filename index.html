@@ -3,41 +3,169 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MonkeyFi - News</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>MonkeyFi News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --card: #f5f5f5;
+      --border: #ddd;
+    }
+
+    body.dark {
+      --bg: #111111;
+      --text: #ffffff;
+      --card: #1e1e1e;
+      --border: #333;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: all 0.4s ease;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .toggle-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4caf50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .card {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .card h2 {
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    .card p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
+  <div class="toggle-switch">
+    <label class="switch">
+      <input type="checkbox" id="modeToggle" />
+      <span class="slider"></span>
+    </label>
+  </div>
+
   <header>
-    <h1>MonkeyFi News</h1>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <nav id="menu">
-      <a href="index.html">News</a>
-      <a href="info.html">Info</a>
-      <a href="help.html">Help</a>
-    </nav>
+    <h1>📢 MonkeyFi News</h1>
+    <p>Welcome to the new beginning 🚀</p>
   </header>
 
   <main>
-    <h2>Welcome to MonkeyFi</h2>
-    <p>🚀 Latest updates, announcements, and project news appear here.</p>
-    <img src="https://via.placeholder.com/600x300" alt="News Image" />
-    <p>More details coming soon!</p>
+    <div class="card">
+      <img src="https://i.postimg.cc/xCYzK4Y5/file-000000008a1862469dabcb3c92b31ed7.png" alt="News Image" />
+      <h2>It is starting now</h2>
+      <p>
+        HELLO Everyone! This is the new start of monkeyfi 🚀 <code>src</code>.
+      </p>
+    </div>
   </main>
-  <div style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #ccc; border-radius: 10px; font-family: Arial;">
-  <img src="https://i.postimg.cc/xCYzK4Y5/file-000000008a1862469dabcb3c92b31ed7.png" alt="News Image" style="width: 100%; border-radius: 10px;">
-  <h2 style="margin-top: 15px;">It is starting now</h2>
-  <p style="font-size: 16px; line-height: 1.6;">
-    HELLO Everyone ! this new start of monkeyfi 🚀<code>src</code>.
-  </p>
- 
-    
-  </div>
-  <div class="card fade-in">
-  <h2>Latest News</h2>
-  <p>This is your news article.</p>
-  </div>
-  <button onclick="document.body.classList.toggle('light-mode')">Toggle Light Mode</button>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+
+  <footer>
+    &copy; 2025 MonkeyFi. All rights reserved.
+  </footer>
+
+  <script>
+    // Toggle Light/Dark Mode
+    const toggle = document.getElementById("modeToggle");
+    toggle.addEventListener("change", () => {
+      document.body.classList.toggle("dark");
+    });
+
+    // Scroll Animation
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    document.querySelectorAll(".card").forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
