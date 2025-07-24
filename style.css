@@ -1,28 +1,28 @@
-/* Reset default styles */
+/* Basic Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Body */
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
+  font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   color: #333;
 }
 
 /* Header */
-.header {
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1e1e1e;
-  padding: 1rem 2rem;
-  color: #fff;
+  background-color: #0d6efd;
+  color: white;
+  padding: 15px 20px;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .logo {
@@ -30,89 +30,68 @@ body {
   font-weight: bold;
 }
 
-.nav {
+/* Navbar */
+nav {
   display: flex;
-  gap: 1rem;
+  gap: 20px;
 }
 
-.nav a {
-  color: #ccc;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.nav a:hover,
-.nav a.active {
-  color: #fff;
-}
-
-/* Mobile Menu Toggle */
-.menu-toggle {
-  display: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* Hero / Banner Section */
-.hero {
-  padding: 4rem 2rem;
-  text-align: center;
-  background: #007acc;
+nav a {
   color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  transition: background 0.3s;
 }
 
-.hero.green-banner {
-  background: #28a745;
+nav a:hover,
+nav a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
 }
 
-/* Content Section */
-.content-section {
-  padding: 2rem;
-  max-width: 900px;
-  margin: auto;
+/* Hamburger menu */
+.menu-icon {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
 }
 
-/* Footer */
-.footer {
-  background: #1e1e1e;
-  color: #aaa;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
+.menu-icon div {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  transition: 0.4s;
 }
 
-/* Fade-in Animation */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeIn 1s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-  .nav {
-    flex-direction: column;
+  nav {
     display: none;
-    background: #1e1e1e;
+    flex-direction: column;
+    background-color: #0d6efd;
     position: absolute;
     top: 60px;
-    right: 0;
+    right: 20px;
     width: 200px;
-    padding: 1rem;
+    border-radius: 5px;
+    padding: 10px;
   }
 
-  .nav.show {
+  nav.show {
     display: flex;
   }
 
-  .menu-toggle {
-    display: block;
+  .menu-icon {
+    display: flex;
   }
+}
+
+/* Main Content */
+main {
+  padding: 30px;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 15px;
 }
