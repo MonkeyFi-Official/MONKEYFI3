@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyNews - Home</title>
+  <title>MONKEY FI</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <div class="logo">🌐 MyNews</div>
+  <header class="header">
+    <div class="logo">🐒 MONKEY FI</div>
     <div class="menu-icon" onclick="toggleMenu(this)">
       <div class="bar1"></div>
       <div class="bar2"></div>
@@ -21,13 +22,36 @@
     </nav>
   </header>
 
-  <main>
-    <section>
-      <h1>Welcome to MyNews</h1>
-      <p>Your trusted source for the latest news.</p>
-    </section>
-  </main>
+  <section class="hero">
+    <h1>Welcome to MONKEY FI</h1>
+    <p>Your trusted source for fun, facts, and fast info!</p>
+    <a href="info.html" class="btn">Explore Now</a>
+  </section>
 
-  <script src="script.js"></script>
+  <section class="features">
+    <div class="feature-box">
+      <h3>Reliable Updates</h3>
+      <p>Stay informed with the latest trusted news and insights.</p>
+    </div>
+    <div class="feature-box">
+      <h3>Fun & Engaging</h3>
+      <p>Entertaining content to make your day better.</p>
+    </div>
+    <div class="feature-box">
+      <h3>Smart UI</h3>
+      <p>Enjoy a fast, clean, and modern user experience.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 MONKEY FI. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleMenu(menu) {
+      menu.classList.toggle("open");
+      document.getElementById("navbar").classList.toggle("show");
+    }
+  </script>
 </body>
 </html>
