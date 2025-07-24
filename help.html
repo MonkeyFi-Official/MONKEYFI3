@@ -3,34 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Help - News Site</title>
+  <title>Help - MyNews</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="logo">NewsSite</div>
-    <nav class="nav" id="nav">
+  <header>
+    <div class="logo">🌐 MyNews</div>
+    <div class="menu-icon" onclick="toggleMenu(this)">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+    <nav id="navbar">
       <a href="index.html">Home</a>
       <a href="info.html">Info</a>
       <a href="help.html" class="active">Help</a>
     </nav>
-    <div class="menu-toggle" id="menuToggle">&#9776;</div>
   </header>
 
-  <section class="hero green-banner">
-    <h1>Need Help?</h1>
-    <p>We're here to assist you with anything related to our website.</p>
-  </section>
-
-  <section class="content-section fade-in">
-    <h2>Contact Us</h2>
-    <p>You can reach out to our support team via email. We aim to reply within 24 hours.</p>
-    <p><strong>Email:</strong> <a href="mailto:monkeyfioffical@gmail.com">monkeyfioffical@gmail.com</a></p>
-  </section>
-
-  <footer class="footer">
-    <p>&copy; 2025 NewsSite. All rights reserved.</p>
-  </footer>
+  <main>
+    <section>
+      <h1>Help & Support</h1>
+      <p>If you have any questions or need support, please contact us at support@mynews.com.</p>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
