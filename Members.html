@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      background-color: #111;
-      color: #eee;
+      background-color: #121212;
+      color: #fff;
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
@@ -16,107 +16,87 @@
 
     header {
       background-color: #1e1e1e;
-      padding: 20px;
-      border-bottom: 1px solid #333;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
+      padding: 1rem;
     }
 
     #menu {
-      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0.5rem 0;
     }
 
     #menu a {
-      color: #eee;
+      color: #fff;
       text-decoration: none;
-      margin-right: 20px;
       font-weight: bold;
-      transition: color 0.3s;
+      transition: 0.3s;
     }
 
     #menu a:hover {
-      color: #0af;
+      color: #00ff99;
     }
 
     .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .members-title {
-      font-size: 1.6rem;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #0af;
-    }
-
-    #memberList {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
     }
 
     .member-card {
-      background-color: #1c1c1c;
-      padding: 15px;
+      background-color: #1e1e1e;
+      padding: 1rem;
+      margin-bottom: 1rem;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-      transition: transform 0.3s;
-    }
-
-    .member-card:hover {
-      transform: scale(1.03);
+      box-shadow: 0 2px 8px rgba(0, 255, 153, 0.1);
     }
 
     .member-card h3 {
-      margin: 0 0 10px;
-      font-size: 1.2rem;
+      margin: 0 0 0.5rem;
     }
 
-    .member-card p {
-      margin: 0;
+    .badge {
+      display: inline-block;
+      background-color: #00ff99;
+      color: #000;
+      padding: 0.3rem 0.6rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+    }
+
+    #join-btn {
+      background-color: #00ff99;
+      color: #000;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    #join-btn:hover {
+      background-color: #00cc77;
+    }
+
+    .counter {
+      margin-top: 1rem;
+      font-size: 0.9rem;
       color: #aaa;
     }
 
-    form {
-      margin-top: 40px;
-      text-align: center;
-    }
-
     input[type="text"] {
-      padding: 10px;
-      width: 250px;
+      width: 100%;
+      padding: 0.5rem;
+      margin: 1rem 0;
+      border-radius: 6px;
       border: none;
-      border-radius: 5px;
-      margin-right: 10px;
-      background-color: #222;
-      color: #fff;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #0af;
-      color: #000;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #08c;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
-
-  <header class="container">
-    <h1>Our Members</h1>
+  <header>
     <nav id="menu">
       <a href="index.html">News</a>
       <a href="info.html">Info</a>
@@ -126,45 +106,67 @@
   </header>
 
   <div class="container">
-    <div class="members-title">Members Who Have Joined</div>
-    <div id="memberList"></div>
+    <h2>Community Members</h2>
+    <input type="text" id="nameInput" placeholder="Enter your name..." />
+    <button id="join-btn">Join Now</button>
 
-    <form id="joinForm">
-      <input type="text" id="nameInput" placeholder="Enter your name..." required />
-      <button type="submit">Join Now</button>
-    </form>
+    <div class="counter" id="memberCount">Members Joined: 0</div>
+    <div id="memberList"></div>
   </div>
 
   <script>
-    const form = document.getElementById("joinForm");
-    const input = document.getElementById("nameInput");
-    const list = document.getElementById("memberList");
+    const memberList = document.getElementById('memberList');
+    const joinBtn = document.getElementById('join-btn');
+    const nameInput = document.getElementById('nameInput');
+    const memberCount = document.getElementById('memberCount');
 
-    let members = JSON.parse(localStorage.getItem("joinedMembers")) || [];
+    let members = JSON.parse(localStorage.getItem('members')) || [];
 
     function renderMembers() {
-      list.innerHTML = "";
-      members.forEach(name => {
-        const card = document.createElement("div");
-        card.className = "member-card";
-        card.innerHTML = `<h3>${name}</h3><p>Joined Member</p>`;
-        list.appendChild(card);
+      memberList.innerHTML = '';
+      members.forEach(member => {
+        const card = document.createElement('div');
+        card.className = 'member-card';
+        card.innerHTML = `
+          <h3>${member.name}</h3>
+          <div class="badge">Joined</div>
+        `;
+        memberList.appendChild(card);
       });
+
+      memberCount.innerText = `Members Joined: ${members.length}`;
     }
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      const name = input.value.trim();
-      if (name && !members.includes(name)) {
-        members.push(name);
-        localStorage.setItem("joinedMembers", JSON.stringify(members));
-        renderMembers();
-        input.value = "";
+    async function fetchIP() {
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        return data.ip;
+      } catch {
+        return "unknown";
       }
+    }
+
+    joinBtn.addEventListener('click', async () => {
+      const name = nameInput.value.trim();
+      if (!name) return alert("Please enter your name");
+
+      const ip = await fetchIP();
+
+      // Prevent duplicate IP
+      if (members.some(m => m.ip === ip)) {
+        alert("You have already joined.");
+        return;
+      }
+
+      const member = { name, ip };
+      members.push(member);
+      localStorage.setItem('members', JSON.stringify(members));
+      renderMembers();
+      nameInput.value = '';
     });
 
     renderMembers();
   </script>
-
 </body>
 </html>
