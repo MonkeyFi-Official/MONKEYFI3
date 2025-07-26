@@ -7,117 +7,107 @@
   <style>
     body {
       background-color: #111;
-      color: #fff;
+      color: white;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
 
-    header {
-      background-color: #0f0;
+    .banner {
+      background-color: #28a745;
+      color: white;
       padding: 20px;
       text-align: center;
       font-size: 24px;
       font-weight: bold;
-      color: black;
     }
 
-    nav#menu {
+    nav {
+      background-color: #222;
       display: flex;
       justify-content: center;
+      padding: 10px 0;
       gap: 20px;
-      background-color: #222;
-      padding: 15px 0;
     }
 
-    nav#menu a {
+    nav a {
       color: white;
       text-decoration: none;
       font-weight: bold;
-      transition: color 0.3s;
     }
 
-    nav#menu a:hover {
-      color: #0f0;
-    }
-
-    main {
+    .container {
       padding: 20px;
-      text-align: center;
-    }
-
-    .members-section {
-      margin-top: 30px;
+      max-width: 600px;
+      margin: auto;
     }
 
     .card {
-      background-color: #1e1e1e;
-      border: 1px solid #444;
-      border-radius: 8px;
-      max-width: 500px;
-      margin: 0 auto;
+      background-color: #1c1c1c;
+      border: 2px solid #28a745;
+      border-radius: 10px;
       padding: 20px;
     }
 
     .card h2 {
       margin-top: 0;
-      color: #0f0;
-      font-size: 20px;
+      text-align: center;
+      color: #28a745;
     }
 
     .member-list {
-      text-align: left;
-      padding: 10px;
-      font-size: 18px;
+      margin-top: 20px;
+      padding: 0;
+      list-style: none;
     }
 
-    .member {
+    .member-list li {
       padding: 5px 0;
+      color: #00ff00;
+      font-weight: bold;
     }
 
-    .member span {
-      color: #0f0;
-    }
-
-    .join-section {
+    .form-section {
+      text-align: center;
       margin-top: 20px;
     }
 
-    .join-section input {
+    input[type="text"] {
       padding: 10px;
-      border: none;
+      width: 60%;
       border-radius: 5px;
-      width: 200px;
-      margin-right: 10px;
+      border: none;
     }
 
-    .join-section button {
+    button {
       padding: 10px 20px;
-      background-color: #0f0;
+      margin-top: 10px;
+      background-color: #28a745;
+      color: white;
       border: none;
-      border-radius: 5px;
-      color: black;
       font-weight: bold;
+      border-radius: 5px;
       cursor: pointer;
+    }
+
+    .counter {
+      text-align: center;
+      margin-top: 10px;
+      color: #ccc;
     }
 
     footer {
       text-align: center;
-      padding: 15px;
+      padding: 10px;
+      color: #888;
       margin-top: 40px;
-      background-color: #222;
-      color: #aaa;
-      font-size: 14px;
     }
-
   </style>
 </head>
 <body>
-
-  <header>
-    <!-- Green Banner — you can add your own text inside this -->
-    MonkeyFi Community 🐵
-  </header>
+  <div class="banner">
+    <!-- Add your banner text here -->
+  </div>
 
   <nav id="menu">
     <a href="index.html">News</a>
@@ -126,59 +116,51 @@
     <a href="Members.html">Members</a>
   </nav>
 
-  <main>
-    <div class="members-section">
-      <h1>------------------MEMBERS-------------------------</h1>
-
-      <div class="card">
-        <h2>COMMUNITY MEMBERS</h2>
-        <div class="member-list" id="memberList">
-          <!-- Members will be injected here -->
-        </div>
-      </div>
-
-      <div class="join-section">
-        <input type="text" id="nameInput" placeholder="Your name" />
-        <button onclick="addMember()">Join Now</button>
-      </div>
+  <div class="container">
+    <div class="card">
+      <h2>COMMUNITY MEMBERS</h2>
+      <ul class="member-list" id="memberList"></ul>
+      <div class="counter">Total Members: <span id="count">0</span></div>
     </div>
-  </main>
+
+    <div class="form-section">
+      <input type="text" id="nameInput" placeholder="Enter your name" />
+      <br />
+      <button onclick="joinCommunity()">Join Now</button>
+    </div>
+  </div>
 
   <footer>
-    © 2025 MonkeyFi Official. All rights reserved.
+    © MonkeyFi Official. All rights reserved.
   </footer>
 
   <script>
-    const memberListElement = document.getElementById("memberList");
-    const nameInput = document.getElementById("nameInput");
-
-    // Load saved members
     let members = JSON.parse(localStorage.getItem("members")) || [];
 
-    function renderMembers() {
-      memberListElement.innerHTML = "";
-      members.forEach((member, index) => {
-        const memberDiv = document.createElement("div");
-        memberDiv.className = "member";
-        memberDiv.innerHTML = `<span>${index + 1}:</span> ${member}`;
-        memberListElement.appendChild(memberDiv);
+    function renderList() {
+      const list = document.getElementById("memberList");
+      list.innerHTML = "";
+      const uniqueMembers = [...new Set(members)];
+      uniqueMembers.forEach((name, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}: ${name}`;
+        list.appendChild(li);
       });
+      document.getElementById("count").textContent = uniqueMembers.length;
     }
 
-    function addMember() {
-      const name = nameInput.value.trim();
+    function joinCommunity() {
+      const input = document.getElementById("nameInput");
+      const name = input.value.trim();
       if (name && !members.includes(name)) {
         members.push(name);
         localStorage.setItem("members", JSON.stringify(members));
-        renderMembers();
-        nameInput.value = "";
-      } else {
-        alert("Please enter a unique name.");
+        renderList();
       }
+      input.value = "";
     }
 
-    renderMembers();
+    renderList();
   </script>
-
 </body>
 </html>
