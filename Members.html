@@ -1,172 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Members</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Community Members</title>
   <style>
     body {
       background-color: #121212;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
+      color: #f1f1f1;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
 
-    header {
-      background-color: #1e1e1e;
-      padding: 1rem;
-    }
-
     #menu {
+      background-color: #1e1e1e;
+      padding: 10px;
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin: 0.5rem 0;
+      gap: 20px;
+      border-bottom: 2px solid #333;
     }
 
     #menu a {
-      color: #fff;
+      color: #ffffff;
       text-decoration: none;
       font-weight: bold;
-      transition: 0.3s;
     }
 
-    #menu a:hover {
-      color: #00ff99;
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #00ff88;
+      font-size: 28px;
     }
 
     .container {
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1rem;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      background-color: #1f1f1f;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #000;
     }
 
-    .member-card {
-      background-color: #1e1e1e;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 255, 153, 0.1);
-    }
-
-    .member-card h3 {
-      margin: 0 0 0.5rem;
-    }
-
-    .badge {
-      display: inline-block;
-      background-color: #00ff99;
-      color: #000;
-      padding: 0.3rem 0.6rem;
-      border-radius: 5px;
-      font-size: 0.8rem;
-    }
-
-    #join-btn {
-      background-color: #00ff99;
-      color: #000;
-      padding: 0.5rem 1rem;
-      border: none;
+    .member-list {
+      margin: 20px 0;
+      padding: 15px;
       border-radius: 8px;
-      cursor: pointer;
+      background-color: #2c2c2c;
+      border: 1px solid #333;
+    }
+
+    .member-list p {
+      margin: 8px 0;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    .green {
+      color: #00ff88;
       font-weight: bold;
-      margin-top: 1rem;
     }
 
-    #join-btn:hover {
-      background-color: #00cc77;
-    }
-
-    .counter {
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-
-    input[type="text"] {
+    input, button {
       width: 100%;
-      padding: 0.5rem;
-      margin: 1rem 0;
-      border-radius: 6px;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
       border: none;
-      font-size: 1rem;
+      border-radius: 6px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    button:hover {
+      background-color: #00ff88;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #777;
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav id="menu">
-      <a href="index.html">News</a>
-      <a href="info.html">Info</a>
-      <a href="help.html">Help</a>
-      <a href="members.html">Members</a>
-    </nav>
-  </header>
+
+  <!-- Navigation Menu -->
+  <nav id="menu">
+    <a href="index.html">News</a>
+    <a href="info.html">Info</a>
+    <a href="help.html">Help</a>
+    <a href="members.html">Members</a>
+  </nav>
+
+  <h1>------------------ MEMBERS ------------------</h1>
 
   <div class="container">
-    <h2>Community Members</h2>
-    <input type="text" id="nameInput" placeholder="Enter your name..." />
-    <button id="join-btn">Join Now</button>
+    <div class="member-list" id="memberList">
+      <h3>COMMUNITY MEMBERS:</h3>
+      <p>------------0------------------------------</p>
+      <!-- Member entries will appear here -->
+    </div>
 
-    <div class="counter" id="memberCount">Members Joined: 0</div>
-    <div id="memberList"></div>
+    <input type="text" id="nameInput" placeholder="Your Name">
+    <button onclick="joinCommunity()">Join</button>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Wildman Gamerz Community
   </div>
 
   <script>
-    const memberList = document.getElementById('memberList');
-    const joinBtn = document.getElementById('join-btn');
-    const nameInput = document.getElementById('nameInput');
-    const memberCount = document.getElementById('memberCount');
+    const memberList = document.getElementById("memberList");
+    const savedMembers = JSON.parse(localStorage.getItem("members")) || [];
 
-    let members = JSON.parse(localStorage.getItem('members')) || [];
-
-    function renderMembers() {
-      memberList.innerHTML = '';
-      members.forEach(member => {
-        const card = document.createElement('div');
-        card.className = 'member-card';
-        card.innerHTML = `
-          <h3>${member.name}</h3>
-          <div class="badge">Joined</div>
-        `;
-        memberList.appendChild(card);
+    function updateList() {
+      memberList.innerHTML = `<h3>COMMUNITY MEMBERS:</h3><p>------------0------------------------------</p>`;
+      savedMembers.forEach((member, index) => {
+        const p = document.createElement("p");
+        p.innerHTML = `${index + 1}: <span class="green">${member.name}</span> (${member.ip})`;
+        memberList.appendChild(p);
       });
-
-      memberCount.innerText = `Members Joined: ${members.length}`;
     }
 
-    async function fetchIP() {
-      try {
-        const res = await fetch("https://api.ipify.org?format=json");
-        const data = await res.json();
-        return data.ip;
-      } catch {
-        return "unknown";
-      }
-    }
-
-    joinBtn.addEventListener('click', async () => {
-      const name = nameInput.value.trim();
-      if (!name) return alert("Please enter your name");
-
-      const ip = await fetchIP();
-
-      // Prevent duplicate IP
-      if (members.some(m => m.ip === ip)) {
-        alert("You have already joined.");
+    function joinCommunity() {
+      const name = document.getElementById("nameInput").value.trim();
+      if (!name) {
+        alert("Please enter your name!");
         return;
       }
 
-      const member = { name, ip };
-      members.push(member);
-      localStorage.setItem('members', JSON.stringify(members));
-      renderMembers();
-      nameInput.value = '';
-    });
+      fetch("https://api.ipify.org?format=json")
+        .then(response => response.json())
+        .then(data => {
+          const ip = data.ip;
+          const alreadyJoined = savedMembers.some(m => m.ip === ip || m.name.toLowerCase() === name.toLowerCase());
+          if (!alreadyJoined) {
+            savedMembers.push({ name, ip });
+            localStorage.setItem("members", JSON.stringify(savedMembers));
+            updateList();
+          } else {
+            alert("You have already joined!");
+          }
+        })
+        .catch(() => alert("IP detection failed."));
+    }
 
-    renderMembers();
+    updateList();
   </script>
 </body>
 </html>
