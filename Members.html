@@ -3,115 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MonkeyFi Members</title>
+  <title>Members - MonkeyFi</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
       background-color: #121212;
-      color: #fff;
+      color: white;
     }
 
-    #banner {
-      background: linear-gradient(135deg, #ff6a00, #ffcc00);
-      text-align: center;
-      padding: 25px 10px;
-      font-size: 2em;
-      font-weight: bold;
-      color: #000;
+    /* Banner */
+    .banner {
+      background-color: #00a86b; /* green */
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     nav#menu {
-      background-color: #1f1f1f;
-      padding: 10px;
+      background-color: #1e1e1e;
+      padding: 10px 20px;
       text-align: center;
     }
 
     nav#menu a {
-      color: #fff;
-      margin: 0 15px;
+      color: white;
       text-decoration: none;
-      font-weight: 500;
+      margin: 0 15px;
+      font-weight: bold;
     }
 
     nav#menu a:hover {
-      color: #ffcc00;
+      text-decoration: underline;
     }
 
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background-color: #1e1e1e;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-    }
-
-    h2 {
+    h1 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #ffcc00;
+      margin-top: 20px;
+    }
+
+    .card {
+      background-color: #1e1e1e;
+      max-width: 400px;
+      margin: 20px auto;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 10px #00a86b;
     }
 
     .member-list {
-      list-style: none;
+      list-style-type: none;
       padding: 0;
     }
 
     .member-list li {
-      padding: 10px 15px;
-      margin: 8px 0;
-      background-color: #2a2a2a;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
     }
 
-    .join-box {
-      text-align: center;
-      margin-top: 25px;
-    }
-
-    .join-box input {
-      padding: 8px 10px;
-      border: none;
-      border-radius: 5px;
-      margin-right: 10px;
-    }
-
-    .join-box button {
-      padding: 8px 14px;
-      background-color: #00c853;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    .joined {
+      color: #00ff88;
       font-weight: bold;
     }
 
-    .join-box button:hover {
-      background-color: #00e676;
+    .input-section {
+      text-align: center;
+      margin-top: 30px;
     }
 
-    .footer {
+    input[type="text"] {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 60%;
+      background-color: #1e1e1e;
+      color: white;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background-color: #00a86b;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #009f5d;
+    }
+
+    footer {
       text-align: center;
       margin-top: 40px;
-      padding: 15px;
-      font-size: 0.9em;
-      color: #999;
-    }
-
-    .ip-box {
-      margin-top: 10px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #bbb;
+      color: gray;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <div id="banner">🐵 MONKEYFI MEMBERS 🐵</div>
 
+  <!-- Top green banner -->
+  <div class="banner">
+    <!-- You can insert your custom banner text or image here -->
+  </div>
+
+  <!-- Menu -->
   <nav id="menu">
     <a href="index.html">News</a>
     <a href="info.html">Info</a>
@@ -119,60 +119,63 @@
     <a href="members.html">Members</a>
   </nav>
 
-  <div class="container">
-    <h2>Community Members</h2>
-    <ul class="member-list" id="memberList"></ul>
+  <h1>Community Members</h1>
 
-    <div class="join-box">
-      <input type="text" id="memberName" placeholder="Your name" />
-      <button onclick="joinMember()">Join</button>
-      <div class="ip-box" id="ipBox">Detecting IP...</div>
-    </div>
+  <!-- Member list -->
+  <div class="card">
+    <ul id="memberList" class="member-list">
+      <!-- Members will appear here -->
+    </ul>
   </div>
 
-  <div class="footer">© 2025 MonkeyFi Official. All rights reserved.</div>
+  <!-- Name input -->
+  <div class="input-section">
+    <input type="text" id="nameInput" placeholder="Enter your name" />
+    <button onclick="joinMember()">Join</button>
+  </div>
+
+  <!-- Copyright -->
+  <footer>
+    &copy; 2025 MonkeyFi Official. All rights reserved.
+  </footer>
 
   <script>
+    const memberListElement = document.getElementById("memberList");
+    const nameInput = document.getElementById("nameInput");
+
     let members = [];
 
-    function renderMembers() {
-      const list = document.getElementById("memberList");
-      list.innerHTML = "";
+    function joinMember() {
+      const name = nameInput.value.trim();
+      if (name === "" || members.includes(name.toLowerCase())) return;
+
+      members.push(name.toLowerCase());
+
+      updateList();
+      nameInput.value = "";
+    }
+
+    function updateList() {
+      memberListElement.innerHTML = "";
       members.forEach((name, index) => {
-        list.innerHTML += `<li><span>${index + 1}. ${name}</span></li>`;
+        const li = document.createElement("li");
+        li.className = "joined";
+        li.textContent = `${index + 1}. ${capitalize(name)}`;
+        memberListElement.appendChild(li);
       });
     }
 
-    function joinMember() {
-      const nameInput = document.getElementById("memberName");
-      let name = nameInput.value.trim();
-
-      if (!name) {
-        alert("Please enter your name.");
-        return;
-      }
-
-      if (members.includes(name)) {
-        alert("You already joined.");
-        return;
-      }
-
-      members.push(name);
-      renderMembers();
-      nameInput.value = "";
-
-      alert("✅ Successfully joined the MonkeyFi Community!");
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // IP Fetch
+    // Optional: Detect and log user IP (only visible in console)
     fetch("https://api.ipify.org?format=json")
-      .then((res) => res.json())
-      .then((data) => {
-        document.getElementById("ipBox").textContent = `Your IP: ${data.ip}`;
-      })
-      .catch(() => {
-        document.getElementById("ipBox").textContent = "IP not detected.";
+      .then(res => res.json())
+      .then(data => {
+        console.log("Your IP:", data.ip);
       });
   </script>
+
 </body>
 </html>
