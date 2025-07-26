@@ -3,97 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MonkeyFi | Members</title>
+  <title>Members</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .members-section {
+    .members-page {
       padding: 2rem;
-      max-width: 700px;
+      max-width: 600px;
       margin: auto;
     }
 
-    .member-counter {
+    .members-count {
       font-size: 1.5rem;
       font-weight: bold;
       margin-bottom: 1rem;
     }
 
-    .user-list {
-      list-style: none;
-      padding: 0;
-      margin-bottom: 2rem;
+    .member-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .user-list li {
-      background: #f0f0f0;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 8px;
+    .member-card {
+      background: #f9f9f9;
+      padding: 10px 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    .join-button {
-      padding: 12px 24px;
+    #joinBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
       font-size: 1rem;
-      background: #4caf50;
+      background-color: #333;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
 
-    .join-button:hover {
-      background: #388e3c;
+    #joinBtn:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>🐵 MonkeyFi</h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="members.html">Members</a>
-      </nav>
-    </div>
+  <header class="container">
+    <h1>Members</h1>
   </header>
 
-  <section class="members-section">
-    <h2>🌍 Community Members</h2>
-    <div class="member-counter">Total Joined: <span id="memberCount">0</span></div>
-    <ul class="user-list" id="userList"></ul>
-    <button class="join-button" onclick="joinCommunity()">Join Now 🚀</button>
-  </section>
+  <main class="members-page">
+    <div class="members-count">Members joined: <span id="count">0</span></div>
+
+    <div class="member-list" id="memberList"></div>
+
+    <button id="joinBtn">Join</button>
+  </main>
 
   <script>
-    let members = JSON.parse(localStorage.getItem('monkeyMembers') || '[]');
-    const list = document.getElementById('userList');
-    const count = document.getElementById('memberCount');
+    const listContainer = document.getElementById("memberList");
+    const countElement = document.getElementById("count");
+    const joinBtn = document.getElementById("joinBtn");
+    const IP_KEY = 'joined_by_ip';
+    const STORAGE_KEY = 'members_list';
 
-    function updateDisplay() {
-      list.innerHTML = '';
-      members.forEach((user, i) => {
-        const li = document.createElement('li');
-        li.textContent = `Member #${i + 1} - ${user}`;
-        list.appendChild(li);
+    // Load the list from localStorage
+    const savedList = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    const alreadyJoined = localStorage.getItem(IP_KEY);
+
+    function renderList() {
+      listContainer.innerHTML = '';
+      savedList.forEach((name, index) => {
+        const card = document.createElement('div');
+        card.className = 'member-card';
+        card.textContent = `${index + 1}: ${name}`;
+        listContainer.appendChild(card);
       });
-      count.textContent = members.length;
+      countElement.textContent = savedList.length;
     }
 
-    function joinCommunity() {
-      const userId = `User-${Math.floor(Math.random() * 100000)}`;
-      if (!localStorage.getItem('joinedMonkeyFi')) {
-        members.push(userId);
-        localStorage.setItem('monkeyMembers', JSON.stringify(members));
-        localStorage.setItem('joinedMonkeyFi', 'yes');
-        updateDisplay();
-        alert("🎉 Welcome to MonkeyFi Community!");
-      } else {
-        alert("👋 You're already joined!");
-      }
+    renderList();
+
+    if (alreadyJoined) {
+      joinBtn.disabled = true;
+      joinBtn.textContent = "Already Joined";
     }
 
-    updateDisplay();
+    joinBtn.addEventListener("click", () => {
+      const name = prompt("Enter your name to join:");
+      if (!name || name.trim() === "") return;
+      
+      savedList.push(name.trim());
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedList));
+      localStorage.setItem(IP_KEY, true);
+      renderList();
+      joinBtn.disabled = true;
+      joinBtn.textContent = "Joined";
+    });
   </script>
 </body>
 </html>
