@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MonkeyFi | Members</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .members-section {
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .member-counter {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .user-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 2rem;
+    }
+
+    .user-list li {
+      background: #f0f0f0;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+    }
+
+    .join-button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .join-button:hover {
+      background: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🐵 MonkeyFi</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="members.html">Members</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="members-section">
+    <h2>🌍 Community Members</h2>
+    <div class="member-counter">Total Joined: <span id="memberCount">0</span></div>
+    <ul class="user-list" id="userList"></ul>
+    <button class="join-button" onclick="joinCommunity()">Join Now 🚀</button>
+  </section>
+
+  <script>
+    let members = JSON.parse(localStorage.getItem('monkeyMembers') || '[]');
+    const list = document.getElementById('userList');
+    const count = document.getElementById('memberCount');
+
+    function updateDisplay() {
+      list.innerHTML = '';
+      members.forEach((user, i) => {
+        const li = document.createElement('li');
+        li.textContent = `Member #${i + 1} - ${user}`;
+        list.appendChild(li);
+      });
+      count.textContent = members.length;
+    }
+
+    function joinCommunity() {
+      const userId = `User-${Math.floor(Math.random() * 100000)}`;
+      if (!localStorage.getItem('joinedMonkeyFi')) {
+        members.push(userId);
+        localStorage.setItem('monkeyMembers', JSON.stringify(members));
+        localStorage.setItem('joinedMonkeyFi', 'yes');
+        updateDisplay();
+        alert("🎉 Welcome to MonkeyFi Community!");
+      } else {
+        alert("👋 You're already joined!");
+      }
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
