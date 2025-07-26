@@ -8,148 +8,151 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #000;
+      background-color: black;
       color: white;
     }
-
-    /* Top horizontal menu */
     header {
-      background-color: #111; /* light black */
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 10;
-    }
-
-    nav a {
-      color: #00ff00;
-      text-decoration: none;
-      margin: 0 10px;
-      font-weight: bold;
-    }
-
-    nav {
-      display: flex;
-      gap: 15px;
-    }
-
-    /* Banner */
-    .banner {
-      background-color: #003300; /* dark green */
-      padding: 50px 20px 20px 20px;
+      background-color: #1e1e1e;
+      padding: 15px;
       text-align: left;
-      color: #00ff00;
-      font-size: 30px;
-      font-weight: bold;
-      margin-top: 60px;
     }
-
-    /* Member list */
-    .members {
-      padding: 20px;
+    header h1 {
+      color: darkgreen;
+      margin: 0;
     }
-
-    .members ul {
-      list-style: none;
-      padding: 0;
+    nav {
+      margin-top: 10px;
     }
-
-    .members li {
-      padding: 5px;
-      border-bottom: 1px solid #444;
-    }
-
-    /* Join form */
-    .join-section {
-      padding: 20px;
-    }
-
-    input[type="text"] {
-      padding: 8px;
-      font-size: 16px;
-      margin-right: 10px;
-    }
-
-    button {
-      padding: 8px 15px;
-      font-size: 16px;
-      background-color: #003300; /* dark green */
+    nav a {
+      margin-right: 15px;
       color: white;
+      text-decoration: none;
+    }
+    .form-section {
+      padding: 20px;
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: darkgreen;
       border: none;
+      color: white;
       cursor: pointer;
     }
-
-    .message {
-      margin-top: 10px;
-      color: #00ff00;
+    .member-list {
+      padding: 20px;
     }
-
+    .member-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .member-list li {
+      background-color: #222;
+      margin: 5px 0;
+      padding: 10px;
+    }
     .counter {
-      margin-top: 10px;
-      color: #ccc;
+      margin-top: 20px;
+      color: #0f0;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo" style="color:#00ff00; font-weight:bold;">MonkeyFi</div>
+    <h1>MonkeyFi Members</h1>
     <nav>
       <a href="index.html">News</a>
       <a href="info.html">Info</a>
       <a href="help.html">Help</a>
-      <a href="Members.html">Members</a>
+      <a href="members.html">Members</a>
     </nav>
   </header>
 
-  <div class="banner">MonkeyFi Members</div>
-
-  <div class="join-section">
-    <input type="text" id="nameInput" placeholder="Enter your name" />
-    <button onclick="joinMember()">Join</button>
-    <div class="message" id="message"></div>
-    <div class="counter">Members Joined: <span id="count">0</span></div>
+  <div class="form-section">
+    <input type="text" id="username" placeholder="Enter your name"/>
+    <button onclick="join()">Join</button>
+    <p id="message"></p>
   </div>
 
-  <div class="members">
-    <ul id="memberList"></ul>
+  <div class="member-list">
+    <h2>Joined Members</h2>
+    <ul id="members"></ul>
+    <div class="counter">Total Members: <span id="memberCount">0</span></div>
   </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    const members = [];
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    function joinMember() {
-      const nameInput = document.getElementById("nameInput");
-      const name = nameInput.value.trim();
-      const messageEl = document.getElementById("message");
-      const memberList = document.getElementById("memberList");
-      const countEl = document.getElementById("count");
+    const userList = document.getElementById("members");
+    const userInput = document.getElementById("username");
+    const message = document.getElementById("message");
+    const counter = document.getElementById("memberCount");
 
-      if (!name) {
-        messageEl.textContent = "Please enter a name.";
-        return;
-      }
-
-      if (members.includes(name.toLowerCase())) {
-        messageEl.textContent = "This name has already joined.";
-        return;
-      }
-
-      members.push(name.toLowerCase());
-
-      const li = document.createElement("li");
-      li.textContent = name;
-      memberList.appendChild(li);
-
-      nameInput.value = "";
-      messageEl.textContent = "Successfully joined!";
-      countEl.textContent = members.length;
+    function getIP() {
+      return fetch("https://api.ipify.org?format=json")
+        .then(res => res.json())
+        .then(data => data.ip);
     }
-  </script>
 
+    async function join() {
+      const name = userInput.value.trim();
+      if (!name) return;
+
+      const ip = await getIP();
+
+      db.ref("members").once("value", (snapshot) => {
+        let alreadyExists = false;
+        snapshot.forEach(child => {
+          const data = child.val();
+          if (data.name.toLowerCase() === name.toLowerCase() || data.ip === ip) {
+            alreadyExists = true;
+          }
+        });
+
+        if (alreadyExists) {
+          message.innerText = "Name or IP already joined!";
+          return;
+        }
+
+        const newRef = db.ref("members").push();
+        newRef.set({ name, ip });
+
+        userInput.value = "";
+        message.innerText = "Successfully joined!";
+      });
+    }
+
+    db.ref("members").on("value", (snapshot) => {
+      userList.innerHTML = "";
+      let count = 0;
+      snapshot.forEach(child => {
+        const li = document.createElement("li");
+        li.innerText = child.val().name;
+        userList.appendChild(li);
+        count++;
+      });
+      counter.innerText = count;
+    });
+  </script>
 </body>
 </html>
