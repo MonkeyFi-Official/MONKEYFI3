@@ -3,235 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MonkeyFi Members</title>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database.js"></script>
-
+  <title>MonkeyFi</title>
   <style>
     body {
       margin: 0;
-      background-color: #0d1f1c;
+      font-family: sans-serif;
+      background-color: #000; /* Main screen black */
       color: white;
-      font-family: 'Segoe UI', sans-serif;
     }
-
-    header {
-      background-color: #00b36b;
+    .banner {
+      background-color: #1c1c1c; /* light dark or grey */
       padding: 20px;
-      color: #000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    nav {
-      display: flex;
-      gap: 15px;
-    }
-
-    nav a {
-      color: black;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    main {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-
-    .counter {
-      text-align: center;
-      font-size: 22px;
-      margin: 20px 0;
-      color: #00ff99;
-    }
-
-    .member-card {
-      background: #1c2c2a;
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 10px;
-      color: #fff;
-      box-shadow: 0 0 5px #0f3;
-      font-weight: bold;
-    }
-
-    .join-section {
-      margin-top: 30px;
       text-align: center;
     }
-
-    input {
+    .banner h1 {
+      color: limegreen; /* Green text only */
+    }
+    .container {
+      text-align: center;
+      padding: 30px;
+    }
+    input[type="text"] {
       padding: 10px;
-      border-radius: 6px;
-      border: none;
-      width: 70%;
-      margin-bottom: 10px;
-      background: #333;
-      color: white;
+      width: 200px;
     }
-
     button {
       padding: 10px 20px;
+      background-color: limegreen;
       border: none;
-      background: #00ff99;
       color: black;
-      font-weight: bold;
-      border-radius: 6px;
       cursor: pointer;
+      margin-top: 10px;
     }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      background: #0b1614;
-      color: #aaa;
-      margin-top: 60px;
+    #namesList {
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Banner and Menu -->
-  <header>
-    <h1>MonkeyFi Members</h1>
-    <nav id="menu">
-      <a href="index.html">News</a>
-      <a href="info.html">Info</a>
-      <a href="help.html">Help</a>
-      <a href="members.html">Members</a>
-    </nav>
-  </header>
+<div class="banner">
+  <h1>MonkeyFi</h1>
+</div>
 
-  <main>
-    <div class="counter">
-      Community Members: <span id="memberCount">0</span>
-    </div>
+<div class="container">
+  <input type="text" id="nameInput" placeholder="Enter your name" />
+  <br />
+  <button onclick="join()">Join</button>
+  <div id="namesList"></div>
+</div>
 
-    <!-- Member List -->
-    <div id="memberList"></div>
+<!-- Firebase SDK -->
+<script type="module">
+  // Firebase import
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    <!-- Join Section -->
-    <div class="join-section" id="joinSection">
-      <input type="text" id="nameInput" placeholder="Enter your name..." />
-      <br />
-      <button onclick="joinCommunity()">Join</button>
-    </div>
-  </main>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Gqdzl6UTCNmb-My2NmESvoidWE4zzWc",
+    authDomain: "monkeyfi-266b9.firebaseapp.com",
+    databaseURL: "https://monkeyfi-266b9-default-rtdb.firebaseio.com",
+    projectId: "monkeyfi-266b9",
+    storageBucket: "monkeyfi-266b9.appspot.com",
+    messagingSenderId: "645261385744",
+    appId: "1:645261385744:web:d99cdd80d587a8e718ea95",
+    measurementId: "G-3HPKY3ZV3Z"
+  };
 
-  <footer>
-    © 2025 MonkeyFi Official. All rights reserved.
-  </footer>
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-  <!-- Firebase & Logic -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js";
-    import { getDatabase, ref, get, set, onValue, child } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-database.js";
-
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyD2Gqdzl6UTCNmb-My2NmESvoidWE4zzWc",
-      authDomain: "monkeyfi-266b9.firebaseapp.com",
-      databaseURL: "https://monkeyfi-266b9-default-rtdb.firebaseio.com",
-      projectId: "monkeyfi-266b9",
-      storageBucket: "monkeyfi-266b9.appspot.com",
-      messagingSenderId: "645261385744",
-      appId: "1:645261385744:web:3a02239a5f1e1ee918ea95",
-      measurementId: "G-CTNTMY9WN9"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    let userIP = "";
-
-    // Get user IP address
-    fetch("https://api.ipify.org?format=json")
-      .then(res => res.json())
-      .then(data => {
-        userIP = data.ip;
-        checkIfAlreadyJoined();
-      });
-
-    // Load members list
-    const membersRef = ref(db, "members");
-    const listDiv = document.getElementById("memberList");
-    const counterSpan = document.getElementById("memberCount");
-
-    onValue(membersRef, (snapshot) => {
-      listDiv.innerHTML = "";
-      let count = 0;
-      let sorted = [];
-
-      snapshot.forEach(child => {
-        sorted.push({ key: child.key, ...child.val() });
-      });
-
-      sorted.sort((a, b) => a.timestamp - b.timestamp);
-
-      sorted.forEach((member, index) => {
-        const div = document.createElement("div");
-        div.className = "member-card";
-        div.textContent = `${index + 1}. ${member.name}`;
-        listDiv.appendChild(div);
-        count++;
-      });
-
-      counterSpan.textContent = count;
+  // Get IP (to prevent duplicates)
+  let userIP = "";
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      userIP = data.ip;
     });
 
-    // Check IP if already joined
-    function checkIfAlreadyJoined() {
-      const ipRef = ref(db, `ips/${userIP}`);
-      get(ipRef).then(snapshot => {
-        if (snapshot.exists()) {
-          document.getElementById("joinSection").style.display = "none";
-        }
-      });
-    }
+  // Join function
+  window.join = function () {
+    const name = document.getElementById("nameInput").value.trim();
+    if (name === "") return;
 
-    // Join Community Function
-    async function joinCommunity() {
-      const name = document.getElementById("nameInput").value.trim();
+    const ipRef = ref(db, "users/" + userIP);
+    set(ipRef, {
+      name: name,
+      time: new Date().toLocaleString()
+    }).then(() => {
+      alert("Joined successfully!");
+    });
+  }
 
-      if (!name) return alert("Please enter a name");
+  // Show all users
+  const namesList = document.getElementById("namesList");
+  const usersRef = ref(db, "users/");
+  onValue(usersRef, (snapshot) => {
+    namesList.innerHTML = "<h3>Joined Users</h3>";
+    snapshot.forEach((child) => {
+      const val = child.val();
+      namesList.innerHTML += `<p>${val.name}</p>`;
+    });
+  });
+</script>
 
-      const ipRef = ref(db, `ips/${userIP}`);
-      const ipSnap = await get(ipRef);
-      if (ipSnap.exists()) return alert("You’ve already joined!");
-
-      // Check for duplicate names
-      const snapshot = await get(ref(db, "members"));
-      let exists = false;
-
-      snapshot.forEach(child => {
-        if (child.val().name.toLowerCase() === name.toLowerCase()) {
-          exists = true;
-        }
-      });
-
-      if (exists) return alert("This name is already taken. Please choose a different one.");
-
-      const newMemberRef = ref(db, `members/${Date.now()}`);
-      await set(newMemberRef, {
-        name: name,
-        timestamp: Date.now()
-      });
-
-      await set(ipRef, true);
-
-      document.getElementById("joinSection").style.display = "none";
-    }
-  </script>
 </body>
 </html>
