@@ -3,178 +3,181 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Members - MonkeyFi</title>
+  <title>MonkeyFi Members</title>
   <style>
     body {
-      margin: 0;
+      background-color: #111;
+      color: #fff;
       font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: white;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Banner */
-    .banner {
-      background-color: #00a86b; /* green */
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    header {
+      background-color: #0f0;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: black;
     }
 
     nav#menu {
-      background-color: #1e1e1e;
-      padding: 10px 20px;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background-color: #222;
+      padding: 15px 0;
     }
 
     nav#menu a {
       color: white;
       text-decoration: none;
-      margin: 0 15px;
       font-weight: bold;
+      transition: color 0.3s;
     }
 
     nav#menu a:hover {
-      text-decoration: underline;
+      color: #0f0;
     }
 
-    h1 {
+    main {
+      padding: 20px;
       text-align: center;
-      margin-top: 20px;
+    }
+
+    .members-section {
+      margin-top: 30px;
     }
 
     .card {
       background-color: #1e1e1e;
-      max-width: 400px;
-      margin: 20px auto;
-      border-radius: 12px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      max-width: 500px;
+      margin: 0 auto;
       padding: 20px;
-      box-shadow: 0 0 10px #00a86b;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #0f0;
+      font-size: 20px;
     }
 
     .member-list {
-      list-style-type: none;
-      padding: 0;
+      text-align: left;
+      padding: 10px;
+      font-size: 18px;
     }
 
-    .member-list li {
-      padding: 8px 0;
-      border-bottom: 1px solid #333;
+    .member {
+      padding: 5px 0;
     }
 
-    .joined {
-      color: #00ff88;
-      font-weight: bold;
+    .member span {
+      color: #0f0;
     }
 
-    .input-section {
-      text-align: center;
-      margin-top: 30px;
+    .join-section {
+      margin-top: 20px;
     }
 
-    input[type="text"] {
+    .join-section input {
       padding: 10px;
       border: none;
-      border-radius: 6px;
-      width: 60%;
-      background-color: #1e1e1e;
-      color: white;
+      border-radius: 5px;
+      width: 200px;
+      margin-right: 10px;
     }
 
-    button {
+    .join-section button {
       padding: 10px 20px;
-      margin-left: 10px;
-      background-color: #00a86b;
+      background-color: #0f0;
       border: none;
-      border-radius: 6px;
-      color: white;
+      border-radius: 5px;
+      color: black;
       font-weight: bold;
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #009f5d;
-    }
-
     footer {
       text-align: center;
+      padding: 15px;
       margin-top: 40px;
-      color: gray;
+      background-color: #222;
+      color: #aaa;
       font-size: 14px;
     }
+
   </style>
 </head>
 <body>
 
-  <!-- Top green banner -->
-  <div class="banner">
-    <!-- You can insert your custom banner text or image here -->
-  </div>
+  <header>
+    <!-- Green Banner — you can add your own text inside this -->
+    MonkeyFi Community 🐵
+  </header>
 
-  <!-- Menu -->
   <nav id="menu">
     <a href="index.html">News</a>
     <a href="info.html">Info</a>
     <a href="help.html">Help</a>
-    <a href="members.html">Members</a>
+    <a href="Members.html">Members</a>
   </nav>
 
-  <h1>Community Members</h1>
+  <main>
+    <div class="members-section">
+      <h1>------------------MEMBERS-------------------------</h1>
 
-  <!-- Member list -->
-  <div class="card">
-    <ul id="memberList" class="member-list">
-      <!-- Members will appear here -->
-    </ul>
-  </div>
+      <div class="card">
+        <h2>COMMUNITY MEMBERS</h2>
+        <div class="member-list" id="memberList">
+          <!-- Members will be injected here -->
+        </div>
+      </div>
 
-  <!-- Name input -->
-  <div class="input-section">
-    <input type="text" id="nameInput" placeholder="Enter your name" />
-    <button onclick="joinMember()">Join</button>
-  </div>
+      <div class="join-section">
+        <input type="text" id="nameInput" placeholder="Your name" />
+        <button onclick="addMember()">Join Now</button>
+      </div>
+    </div>
+  </main>
 
-  <!-- Copyright -->
   <footer>
-    &copy; 2025 MonkeyFi Official. All rights reserved.
+    © 2025 MonkeyFi Official. All rights reserved.
   </footer>
 
   <script>
     const memberListElement = document.getElementById("memberList");
     const nameInput = document.getElementById("nameInput");
 
-    let members = [];
+    // Load saved members
+    let members = JSON.parse(localStorage.getItem("members")) || [];
 
-    function joinMember() {
-      const name = nameInput.value.trim();
-      if (name === "" || members.includes(name.toLowerCase())) return;
-
-      members.push(name.toLowerCase());
-
-      updateList();
-      nameInput.value = "";
-    }
-
-    function updateList() {
+    function renderMembers() {
       memberListElement.innerHTML = "";
-      members.forEach((name, index) => {
-        const li = document.createElement("li");
-        li.className = "joined";
-        li.textContent = `${index + 1}. ${capitalize(name)}`;
-        memberListElement.appendChild(li);
+      members.forEach((member, index) => {
+        const memberDiv = document.createElement("div");
+        memberDiv.className = "member";
+        memberDiv.innerHTML = `<span>${index + 1}:</span> ${member}`;
+        memberListElement.appendChild(memberDiv);
       });
     }
 
-    function capitalize(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
+    function addMember() {
+      const name = nameInput.value.trim();
+      if (name && !members.includes(name)) {
+        members.push(name);
+        localStorage.setItem("members", JSON.stringify(members));
+        renderMembers();
+        nameInput.value = "";
+      } else {
+        alert("Please enter a unique name.");
+      }
     }
 
-    // Optional: Detect and log user IP (only visible in console)
-    fetch("https://api.ipify.org?format=json")
-      .then(res => res.json())
-      .then(data => {
-        console.log("Your IP:", data.ip);
-      });
+    renderMembers();
   </script>
 
 </body>
